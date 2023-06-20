@@ -1,7 +1,7 @@
 import { db } from "../db.js";
 
 export const getClientes = (_, res) => {
-  const q = "SELECT * FROM clientes";
+  const q = "SELECT * FROM cliente";
 
   db.query(q, (err, data) => {
     if (err) return res.json(err);
@@ -12,7 +12,7 @@ export const getClientes = (_, res) => {
 
 export const addCliente = (req, res) => {
   const q =
-    "INSERT INTO clientes(`cpfcnpj`,`nome`, `email`, `endereco`) VALUES(?)";
+    "INSERT INTO cliente(`cpfcnpj`,`nome`, `email`, `endereco`) VALUES(?)";
 
   const values = [
     req.body.cpfcnpj,
@@ -30,10 +30,9 @@ export const addCliente = (req, res) => {
 
 export const updateCliente = (req, res) => {
   const q =
-    "UPDATE clientes SET `nome` = ?, `email` = ?, `endereco` = ? WHERE `cpfcnpj` = ?";
+    "UPDATE cliente SET `nome` = ?, `email` = ?, `endereco` = ? WHERE `cpfcnpj` = ?";
 
   const values = [
-    req.body.cpfcnpj,
     req.body.nome,
     req.body.email,
     req.body.endereco
@@ -47,7 +46,7 @@ export const updateCliente = (req, res) => {
 };
 
 export const deleteCliente = (req, res) => {
-  const q = "DELETE FROM clientes WHERE `cpfcnpj` = ?";
+  const q = "DELETE FROM cliente WHERE `cpfcnpj` = ?";
 
   db.query(q, [req.params.id], (err) => {
     if (err) return res.json(err);
