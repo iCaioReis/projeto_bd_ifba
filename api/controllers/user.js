@@ -18,7 +18,7 @@ export const addUser = (req, res) => {
     req.body.nome,
     req.body.email,
     req.body.fone,
-    req.body.data_nascimento,
+
   ];
 
   db.query(q, [values], (err) => {
