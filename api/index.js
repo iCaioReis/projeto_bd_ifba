@@ -1,13 +1,16 @@
+//const cors = require('cors');
 import express from "express"
-import userRoutes from "./routes/users.js"
-import clientesRoutes from "./routes/cliente.js"
 import cors from "cors"
+import bodyParser from'body-parser'
+import clientesRoutes from "./routes/cliente.js"
+import frontendRoutes from "./routes/frontend.js"
 
-const app = express()
+const app = express();
 
-app.use(express.json())
-app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true}))
+app.use(bodyParser.json())
+app.use(express.json());
+app.use('/', frontendRoutes)
+app.use('/api', clientesRoutes);
 
-app.use("/", clientesRoutes)
-
-app.listen(8800) 
+app.listen(8800);

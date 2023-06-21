@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD de Cadastro de Clientes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .form-group input[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .clients-container {
+      margin-top: 30px;
+    }
+
+    .client-card {
+      background-color: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .client-card .client-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .client-card .client-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .client-card .client-actions button {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Cadastro de Clientes Manu.RAR</h1>
+    <form id="client-form">
+      <div class="form-group">
+        <label for="cpf_cnpj">CPF/CNPJ:</label>
+        <input type="text" id="cpf_cnpj" name="cpf_cnpj" placeholder="Digite o CPF ou CNPJ" required>
+      </div>
+      <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite o nome" required>
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" placeholder="Digite o e-mail" required>
+      </div>
+      <div class="form-group">
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco" placeholder="Digite o endereço" required>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Cadastrar">
+      </div>
+    </form>
+
+    <div class="clients-container" id="clients-container">
+      <h2>Clientes Cadastrados:</h2>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script>
+    const clientForm = document.getElementById('client-form');
+    const clientsContainer = document.getElementById('clients-container');
+
+    clientForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const cpf_cnpjInput = document.getElementById('cpf_cnpj');
+      const nomeInput = document.getElementById('nome');
+      const emailInput = document.getElementById('email');
+      const enderecoInput = document.getElementById('endereco');
+
+      let cpf_cnpj = cpf_cnpjInput.value
+      let nome = nomeInput.value
+      let email = emailInput.value
+      let endereco = enderecoInput.value
+
+      const client = {
+        cpf_cnpj: cpf_cnpjInput.value,
+        nome: nomeInput.value,
+        email: emailInput.value,
+        endereco: enderecoInput.value
+      };
+
+
+
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: { cpfcnpj: cpf_cnpj, nome: nome, email:email, endereco:endereco },
+        url: "http://127.0.0.1:8800/api/",
+        success: alert("Usuário cadastrado com sucesso!"),
+        error: function (erro) {
+
+          console.log(erro)
+        }
+      })
+
+      $.ajax({
+        type: 'GET',
+        url: "http://127.0.0.1:8800/api/",
+        success: renderList,
+      })
+      function renderList(data) {
+        console.log(data)
+      }
+
+
+
+
+
+
+      addClientToContainer(client);
+      clientForm.reset();
+    });
+
+    function addClientToContainer(client) {
+      const clientCard = document.createElement('div');
+      clientCard.classList.add('client-card');
+
+      const clientInfo = document.createElement('div');
+      clientInfo.classList.add('client-info');
+      clientInfo.innerHTML = `
+        <div><strong>CPF/CNPJ:</strong> ${client.cpf_cnpj}</div>
+        <div><strong>Nome:</strong> ${client.nome}</div>
+        <div><strong>E-mail:</strong> ${client.email}</div>
+        <div><strong>Endereço:</strong> ${client.endereco}</div>
+      `;
+
+      const clientActions = document.createElement('div');
+      clientActions.classList.add('client-actions');
+      clientActions.innerHTML = `
+        <button onclick="editClient(this)">Editar</button>
+        <button onclick="deleteClient(this)">Excluir</button>
+      `;
+
+      clientCard.appendChild(clientInfo);
+      clientCard.appendChild(clientActions);
+      clientsContainer.appendChild(clientCard);
+    }
+
+    function deleteClient(button) {
+      const clientCard = button.closest('.client-card');
+      clientCard.remove();
+    }
+
+    function editClient(button) {
+      const clientCard = button.closest('.client-card');
+      const clientInfo = clientCard.querySelector('.client-info');
+
+      const cpf_cnpj = clientInfo.querySelector('div:nth-child(1)').textContent.trim().split(':')[1].trim();
+      const nome = clientInfo.querySelector('div:nth-child(2)').textContent.trim().split(':')[1].trim();
+      const email = clientInfo.querySelector('div:nth-child(3)').textContent.trim().split(':')[1].trim();
+      const endereco = clientInfo.querySelector('div:nth-child(4)').textContent.trim().split(':')[1].trim();
+
+      const cpf_cnpjInput = document.getElementById('cpf_cnpj');
+      const nomeInput = document.getElementById('nome');
+      const emailInput = document.getElementById('email');
+      const enderecoInput = document.getElementById('endereco');
+
+      cpf_cnpjInput.value = cpf_cnpj;
+      nomeInput.value = nome;
+      emailInput.value = email;
+      enderecoInput.value = endereco;
+
+      clientCard.remove();
+    }
+  </script>
+</body>
+
+</html>

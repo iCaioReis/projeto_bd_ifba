@@ -82,7 +82,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
         .post("http://localhost:8800", {
           nome: user.nome.value,
           email: user.email.value,
-          fone: user.fone.value,
+          fone: user.fone.value, 
           data_nascimento: user.data_nascimento.value,
         })
         .then(({ data }) => toast.success(data))

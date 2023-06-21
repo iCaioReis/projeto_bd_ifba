@@ -2,15 +2,15 @@ import { db } from "../db.js";
 
 export const getClientes = (_, res) => {
   const q = "SELECT * FROM cliente";
-
   db.query(q, (err, data) => {
     if (err) return res.json(err);
-
     return res.status(200).json(data);
   });
+
 };
 
 export const addCliente = (req, res) => {
+  console.log(req.body)
   const q =
     "INSERT INTO cliente(`cpfcnpj`,`nome`, `email`, `endereco`) VALUES(?)";
 
@@ -22,7 +22,7 @@ export const addCliente = (req, res) => {
   ];
 
   db.query(q, [values], (err) => {
-    if (err) return res.json(err);
+    if (err) return res.status(500).json(err);
 
     return res.status(200).json("Cliente criado com sucesso!");
   });
