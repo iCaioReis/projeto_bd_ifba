@@ -124,6 +124,7 @@
   <script>
     const clientForm = document.getElementById('client-form');
     const clientsContainer = document.getElementById('clients-container');
+    getClients()
 
     clientForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -145,39 +146,62 @@
         endereco: enderecoInput.value
       };
 
-
-
       $.ajax({
         type: 'POST',
         dataType: 'json',
-        data: { cpfcnpj: cpf_cnpj, nome: nome, email:email, endereco:endereco },
+        data: { cpfcnpj: cpf_cnpj, nome: nome, email: email, endereco: endereco },
         url: "http://127.0.0.1:8800/api/",
         success: alert("Usuário cadastrado com sucesso!"),
         error: function (erro) {
-
           console.log(erro)
         }
       })
+      getClients()
+      clientForm.reset();
+    });
+
+    function getClients() {
+      var listaClientes = document.getElementsByClassName("client-info");
+      for (var i = 0; i < listaClientes.length; i++) {
+        listaClientes[i].remove()
+      }
 
       $.ajax({
         type: 'GET',
         url: "http://127.0.0.1:8800/api/",
         success: renderList,
       })
+
       function renderList(data) {
         console.log(data)
+
+        for (i = 0; i < data.length; i++) {
+
+          const clientCard = document.createElement('div');
+          clientCard.classList.add('client-card');
+
+          const clientInfo = document.createElement('div');
+          clientInfo.classList.add('client-info');
+          clientInfo.innerHTML = `
+        <div><strong>CPF/CNPJ:</strong> ${data[i].CPFCNPJ}</div>
+        <div><strong>Nome:</strong> ${data[i].Nome}</div>
+        <div><strong>E-mail:</strong> ${data[i].Email}</div>
+        <div><strong>Endereço:</strong> ${data[i].Endereco}</div>`;
+
+          const clientActions = document.createElement('div');
+          clientActions.classList.add('client-actions');
+          clientActions.innerHTML = `
+        <button onclick="editClient(this)">Editar</button>
+        <button onclick="deleteClient(this)">Excluir</button>`;
+
+          clientCard.appendChild(clientInfo);
+          clientCard.appendChild(clientActions);
+          clientsContainer.appendChild(clientCard);
+        }
       }
+    }
 
-
-
-
-
-
-      addClientToContainer(client);
-      clientForm.reset();
-    });
-
-    function addClientToContainer(client) {
+    /*function addClientToContainer(client) {
       const clientCard = document.createElement('div');
       clientCard.classList.add('client-card');
 
@@ -200,7 +224,7 @@
       clientCard.appendChild(clientInfo);
       clientCard.appendChild(clientActions);
       clientsContainer.appendChild(clientCard);
-    }
+    }*/
 
     function deleteClient(button) {
       const clientCard = button.closest('.client-card');
