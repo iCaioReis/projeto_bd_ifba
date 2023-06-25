@@ -156,16 +156,10 @@
           console.log(erro)
         }
       })
-      getClients()
-      clientForm.reset();
+      window.location.reload(true)
     });
 
     function getClients() {
-      var listaClientes = document.getElementsByClassName("client-info");
-      for (var i = 0; i < listaClientes.length; i++) {
-        listaClientes[i].remove()
-      }
-
       $.ajax({
         type: 'GET',
         url: "http://127.0.0.1:8800/api/",
@@ -192,7 +186,7 @@
           clientActions.classList.add('client-actions');
           clientActions.innerHTML = `
         <button onclick="editClient(this)">Editar</button>
-        <button onclick="deleteClient(this)">Excluir</button>`;
+        <button id=${data[i].CPFCNPJ} onclick="deleteClient(this)">Excluir</button>`;
 
           clientCard.appendChild(clientInfo);
           clientCard.appendChild(clientActions);
@@ -227,8 +221,12 @@
     }*/
 
     function deleteClient(button) {
-      const clientCard = button.closest('.client-card');
-      clientCard.remove();
+      $.ajax({
+        type: 'DELETE',
+        url: `http://127.0.0.1:8800/api/${button.id}`,
+        success: alert("Usuário deletado com sucesso!")
+      })
+      window.location.reload(true)
     }
 
     function editClient(button) {
