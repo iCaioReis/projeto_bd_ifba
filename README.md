@@ -6,16 +6,16 @@ Projeto realizado com base [vídeo](https://www.youtube.com/watch?v=voXTVTW73E8)
 
 Alunos:
 
-Ariane;
-Caio Eduardo Reis de Oliveira;
-João;
-Lucas Vilares;
+Ariane;<br>
+Caio Eduardo Reis de Oliveira;<br>
+João;<br>
+Lucas Vilares;<br>
 Renata.
 
 ## Como rodar o projeto
 
-1 - Ter intalado no computador o MySql, Visual Studio Code e Node.js;
-2 - Criar o banco de dados com as tabelas com o uso do código SQL disponibilizado na pasta arquivos > modelo_fisico.sql;
-3 - Abrir o terminal no VS Code, entrar na pasta 'api' e instalar as dependências utilizando o comando 'npm i';
-4 - Ainda no terminal, executar o comando 'npm start';
+1 - Ter intalado no computador o MySql, Visual Studio Code e Node.js;<br>
+2 - Criar o banco de dados com as tabelas com o uso do código SQL disponibilizado na pasta arquivos > modelo_fisico.sql;<br>
+3 - Abrir o terminal no VS Code, entrar na pasta 'api' e instalar as dependências utilizando o comando 'npm i';<br>
+4 - Ainda no terminal, executar o comando 'npm start';<br>
 5 - Abrir o navegador e entrar no endereço '127.0.0.1:8800'
