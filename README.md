@@ -6,11 +6,11 @@ Projeto realizado com base [vídeo](https://www.youtube.com/watch?v=voXTVTW73E8)
 
 Alunos:
 
-Ariane;<br>
+Ariane Rocha dos Santos;<br>
 Caio Eduardo Reis de Oliveira;<br>
-João;<br>
-Lucas Vilares;<br>
-Renata.
+João Ricardo Marcílio de Melo Gusmão;<br>
+Lucas Vilares Barreto;<br>
+Renata Gondim Valença.
 
 ## Como rodar o projeto
 
