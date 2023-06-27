@@ -21,7 +21,7 @@
       max-width: 600px;
       margin: 0 auto;
       padding: 20px;
-      background-color: #fff;
+      background-color: #ffffff;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
@@ -95,7 +95,7 @@
     <form id="client-form">
       <div class="form-group">
         <label for="cpf_cnpj">CPF/CNPJ:</label>
-        <input type="text" id="cpf_cnpj" name="cpf_cnpj" placeholder="Digite o CPF ou CNPJ" required>
+        <input type="text" id="cpf_cnpj" name="cpf_cnpj" placeholder="Digite o CPF ou CNPJ" pattern="\d{11}|\d{14}" required>
       </div>
       <div class="form-group">
         <label for="nome">Nome:</label>
@@ -110,7 +110,10 @@
         <input type="text" id="endereco" name="endereco" placeholder="Digite o endereço" required>
       </div>
       <div class="form-group">
-        <input type="submit" value="Cadastrar">
+        <input type="submit" value="Cadastrar" id="btnCadastrar">
+      </div>
+      <div class="form-group">
+        <input type="button" value="Salvar" id="btnSalvar" style="display: none;">
       </div>
     </form>
 
@@ -177,16 +180,16 @@
           const clientInfo = document.createElement('div');
           clientInfo.classList.add('client-info');
           clientInfo.innerHTML = `
-        <div><strong>CPF/CNPJ:</strong> ${data[i].CPFCNPJ}</div>
-        <div><strong>Nome:</strong> ${data[i].Nome}</div>
-        <div><strong>E-mail:</strong> ${data[i].Email}</div>
-        <div><strong>Endereço:</strong> ${data[i].Endereco}</div>`;
+        <div><strong>CPF/CNPJ:</strong> ${data[i].cpfcnpj}</div>
+        <div><strong>Nome:</strong> ${data[i].nome}</div>
+        <div><strong>E-mail:</strong> ${data[i].email}</div>
+        <div><strong>Endereço:</strong> ${data[i].endereco}</div>`;
 
           const clientActions = document.createElement('div');
           clientActions.classList.add('client-actions');
           clientActions.innerHTML = `
-        <button onclick="editClient(this)">Editar</button>
-        <button id=${data[i].CPFCNPJ} onclick="deleteClient(this)">Excluir</button>`;
+        <button id=${data[i].cpfcnpj} onclick="editClient(this)">Editar</button>
+        <button id=${data[i].cpfcnpj} onclick="deleteClient(this)">Excluir</button>`;
 
           clientCard.appendChild(clientInfo);
           clientCard.appendChild(clientActions);
@@ -248,7 +251,33 @@
       emailInput.value = email;
       enderecoInput.value = endereco;
 
-      clientCard.remove();
+      var btnSalvar = document.getElementById("btnSalvar");
+      btnSalvar.style.display = "block";
+      var btnCadastrar = document.getElementById("btnCadastrar");
+      btnCadastrar.style.display = "none";
+
+      btnSalvar.addEventListener('click', function () {
+        const cpf_cnpjInput = document.getElementById('cpf_cnpj');
+        const nomeInput = document.getElementById('nome');
+        const emailInput = document.getElementById('email');
+        const enderecoInput = document.getElementById('endereco');
+
+        let cpf_cnpj = cpf_cnpjInput.value
+        let nome = nomeInput.value
+        let email = emailInput.value
+        let endereco = enderecoInput.value
+        $.ajax({
+          type: 'PUT',
+          dataType: 'json',
+          data: { cpfcnpj:cpf_cnpj, nome: nome, email: email, endereco: endereco },
+          url: `http://127.0.0.1:8800/api/${button.id}`,
+          success: alert("Usuário alterado com sucesso!"),
+          error: function (erro) {
+            console.log(erro)
+          }
+        })
+        window.location.reload(true)
+      })
     }
   </script>
 </body>

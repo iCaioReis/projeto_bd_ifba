@@ -1,6 +1,5 @@
 //const cors = require('cors');
 import express from "express"
-import cors from "cors"
 import bodyParser from'body-parser'
 import clientesRoutes from "./routes/cliente.js"
 import frontendRoutes from "./routes/frontend.js"

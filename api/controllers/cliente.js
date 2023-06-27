@@ -10,7 +10,6 @@ export const getClientes = (_, res) => {
 };
 
 export const addCliente = (req, res) => {
-  console.log(req.body)
   const q =
     "INSERT INTO cliente(`cpfcnpj`,`nome`, `email`, `endereco`) VALUES(?)";
 
@@ -30,17 +29,17 @@ export const addCliente = (req, res) => {
 
 export const updateCliente = (req, res) => {
   const q =
-    "UPDATE cliente SET `nome` = ?, `email` = ?, `endereco` = ? WHERE `cpfcnpj` = ?";
+    "UPDATE cliente SET `cpfcnpj` = ?, `nome` = ?, `email` = ?, `endereco` = ? WHERE `cpfcnpj` = ?";
 
   const values = [
+    req.body.cpfcnpj,
     req.body.nome,
     req.body.email,
     req.body.endereco
   ];
 
   db.query(q, [...values, req.params.id], (err) => {
-    if (err) return res.json(err);
-
+    if (err) return res.status(500).json(err);
     return res.status(200).json("Cliente atualizado com sucesso!");
   });
 };
